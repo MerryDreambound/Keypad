@@ -17,7 +17,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.block.OrientationHelper;
@@ -140,21 +139,21 @@ public class KeypadBlock extends BlockWithEntity {
 //    protected static final VoxelShape NORTH_WALL_SHAPE = VoxelShapes.cuboid(0.1875, 0.0625, 0.875, 0.8125, 0.875, 1.0);
     protected static final VoxelShape NORTH_WALL_SHAPE = Block.createCuboidShape(3, 1, 14, 13, 14, 16);
     protected static final VoxelShape SOUTH_WALL_SHAPE = Block.createCuboidShape(3, 1, 0, 13, 14, 2);
-
-
     protected static final VoxelShape EAST_WALL_SHAPE = Block.createCuboidShape(0, 1, 3, 2, 14, 13);
-
     protected static final VoxelShape WEST_WALL_SHAPE = Block.createCuboidShape(14, 1, 3, 16, 14, 13);
 
-    protected static final VoxelShape CEILING_Z_AXIS_SHAPE = Block.createCuboidShape(5.0, 14, 4.0, 11.0, 16.0, 12.0);
-    protected static final VoxelShape CEILING_X_AXIS_SHAPE = Block.createCuboidShape(3, 14, 3, 13, 16.0, 13);
 
-//    protected static final VoxelShape SOUTH_WALL_SHAPE = Block.createCuboidShape(5.0, 1, 0.0, 11.0, 14, 6.0);
-//    protected static final VoxelShape WEST_WALL_SHAPE = Block.createCuboidShape(10.0, 1, 5.0, 16.0, 14, 11.0);
-    protected static final VoxelShape FLOOR_Z_AXIS_SHAPE = Block.createCuboidShape(5.0, 0.0, 4.0, 11.0, 6.0, 12.0);
+    protected static final VoxelShape NORTH_CEILING_SHAPE = Block.createCuboidShape(3, 14, 1, 13, 16.0, 14);
+    protected static final VoxelShape SOUTH_CEILING_SHAPE = Block.createCuboidShape(3, 14, 2, 13, 16.0, 15);
+    protected static final VoxelShape EAST_CEILING_SHAPE = Block.createCuboidShape(2, 14, 3, 15, 16.0, 13);
+    protected static final VoxelShape WEST_CEILING_SHAPE = Block.createCuboidShape(1, 14, 3, 14, 16.0, 13);
 
-    protected static final VoxelShape FLOOR_X_AXIS_SHAPE = Block.createCuboidShape(4.0, 0.0, 5.0, 12.0, 6.0, 11.0);
-//        return VoxelShapes.cuboid(0.1875, 0.0625, 0.875, 0.8125, 0.875, 1.0);
+
+
+    protected static final VoxelShape NORTH_FLOOR_SHAPE = Block.createCuboidShape(3, 0.0, 2, 13, 2, 15);
+    protected static final VoxelShape SOUTH_FLOOR_SHAPE = Block.createCuboidShape(3, 0.0, 1, 13, 2, 14);
+    protected static final VoxelShape EAST_FLOOR_SHAPE = Block.createCuboidShape(1, 0.0, 3, 14, 2, 13);
+    protected static final VoxelShape WEST_FLOOR_SHAPE = Block.createCuboidShape(2, 0.0, 3, 15, 2, 13);
 
 //    @Override
 //    protected VoxelShape getSidesShape(){
@@ -169,12 +168,19 @@ public class KeypadBlock extends BlockWithEntity {
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         switch ((BlockFace)state.get(FACE)) {
             case FLOOR:
-                switch (((Direction)state.get(FACING)).getAxis()) {
-                    case X:
-                        return FLOOR_X_AXIS_SHAPE;
-                    case Z:
+                switch (((Direction)state.get(FACING))) {
+                    case EAST:
+                        return EAST_FLOOR_SHAPE;
+
+                    case WEST:
+                        return WEST_FLOOR_SHAPE;
+
+                    case SOUTH:
+                        return SOUTH_FLOOR_SHAPE;
+
+                    case NORTH:
                     default:
-                        return FLOOR_Z_AXIS_SHAPE;
+                        return NORTH_FLOOR_SHAPE;
                 }
             case WALL:
                 switch ((Direction)state.get(FACING)) {
@@ -190,12 +196,16 @@ public class KeypadBlock extends BlockWithEntity {
                 }
             case CEILING:
             default:
-                switch (((Direction)state.get(FACING)).getAxis()) {
-                    case X:
-                        return CEILING_X_AXIS_SHAPE;
-                    case Z:
+                switch (((Direction)state.get(FACING)))  {
+                    case EAST:
+                        return EAST_CEILING_SHAPE;
+                    case WEST:
+                        return WEST_CEILING_SHAPE;
+                    case SOUTH:
+                        return SOUTH_CEILING_SHAPE;
+                    case NORTH:
                     default:
-                        return CEILING_Z_AXIS_SHAPE;
+                        return NORTH_CEILING_SHAPE;
                 }
         }
     }
