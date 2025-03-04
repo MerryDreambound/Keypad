@@ -64,22 +64,23 @@ public class KeypadBlock extends BlockWithEntity {
 
     @Override
     protected int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        if (state.get(POWERED) && state.get(FACING) == direction) {
-            return 15;
-        }else {
-            return 0;
-        }
+        return state.get(POWERED) && getDirection(state) == direction ? 15 : 0;
     }
     @Override
     protected int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        if (state.get(POWERED) && state.get(FACING) == direction) {
-            return 15;
-        }else {
-            return 0;
-        }
+        return getWeakRedstonePower(state, world, pos, direction);
     }
 
-
+    protected static Direction getDirection(BlockState state) {
+        switch ((BlockFace)state.get(FACE)) {
+            case CEILING:
+                return Direction.DOWN;
+            case FLOOR:
+                return Direction.UP;
+            default:
+                return state.get(FACING);
+        }
+    }
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
