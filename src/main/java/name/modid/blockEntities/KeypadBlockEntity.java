@@ -29,7 +29,7 @@ public class KeypadBlockEntity extends BlockEntity {
         this.password = "";
         markDirty();
     }
-    public void setPassword(String password) {
+    public void setPassword(String password, Boolean scheduleTick) {
         this.password = password;
         markDirty();
 
@@ -39,10 +39,13 @@ public class KeypadBlockEntity extends BlockEntity {
             if(!this.passwordSet.isEmpty()){
                 world.setBlockState(pos, state.with(KeypadBlock.POWERED, Objects.equals(this.password, this.passwordSet)), 3);
                 keypadBlock.updateTargets(world, pos);
-                world.scheduleBlockTick(pos,keypadBlock,100);
+                if(scheduleTick){
+                    world.scheduleBlockTick(pos,keypadBlock,100);
+                }
             }
         }
     }
+
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);

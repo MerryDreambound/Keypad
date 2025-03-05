@@ -126,7 +126,7 @@ public class KeypadBlock extends BlockWithEntity {
         KeypadBlockEntity entity = (KeypadBlockEntity) world.getBlockEntity(pos);
         if (state.get(Properties.POWERED)) {
             assert entity != null;
-            entity.setPassword("");
+            entity.setPassword("",false);
         }
         super.scheduledTick(state,world,pos,random);
     }

@@ -46,7 +46,7 @@ public class Keypad implements ModInitializer {
 						World world = context.player().getWorld();
 						BlockState state = world.getBlockState(payload.blockPos());
 						world.setBlockState(payload.blockPos(), state.with(KeypadBlock.PASSWORD_SET,true),3);
-						keypadEntity.setPassword("");
+						keypadEntity.setPassword("",false);
 						context.player().sendMessage(Text.translatable("chat."+Keypad.MOD_ID+".setpassword",
 								Text.literal(payload.password()).setStyle(Style.EMPTY.withColor(Formatting.GREEN).withUnderline(true)
 								.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,payload.password()))
@@ -55,7 +55,7 @@ public class Keypad implements ModInitializer {
 					}
 
 				}
-				keypadEntity.setPassword(payload.password());
+				keypadEntity.setPassword(payload.password(),true);
 			}
 		});
 	}
