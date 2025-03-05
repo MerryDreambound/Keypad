@@ -1,0 +1,10 @@
+{
+  "block.keypad.keypad": "Keypad",
+  "chat.keypad.active": "The keypad is active.",
+  "chat.keypad.emptypassword": "The password is empty and cannot be set.",
+  "chat.keypad.hover.copyText": "Click to copy the password to the clipboard.",
+  "chat.keypad.setpassword": "The password has been set to \"%s\"",
+  "item.keypad.keypad": "Keypad",
+  "screen.keypad.accept": "Accept",
+  "screen.keypad.cancel": "Cancel"
+}
