@@ -50,27 +50,22 @@ public class KeypadBlock extends BlockWithEntity {
         this.updateTargets(world, pos);
     }
 
-
-
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new KeypadBlockEntity(pos, state);
     }
 
-
-
     @Override
     protected boolean emitsRedstonePower(BlockState state) {
         return true;
     }
 
-
-
     @Override
     protected int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
         return state.get(POWERED) && getDirection(state) == direction ? 15 : 0;
     }
+
     @Override
     protected int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
         return getWeakRedstonePower(state, world, pos, direction);
@@ -112,12 +107,14 @@ public class KeypadBlock extends BlockWithEntity {
         super.onStateReplaced(state, world, pos, newState, moved);
         this.updateTargets(world, pos);
     }
+
     public void updateTarget(World world, BlockPos pos, Direction direction) {
         BlockPos blockPos = pos.offset(direction);
         WireOrientation wireOrientation = OrientationHelper.getEmissionOrientation(world, direction, Direction.UP);
         world.updateNeighbor(blockPos, this, wireOrientation);
         world.updateNeighborsExcept(blockPos, this, direction.getOpposite(), wireOrientation);
     }
+
     public void updateTargets(World world, BlockPos pos) {
         for (Direction direction : Direction.values()) {
             updateTarget(world, pos, direction);
@@ -153,22 +150,17 @@ public class KeypadBlock extends BlockWithEntity {
         }
 
         return null;
-//        return this.getDefaultState().with(FACING, direction);
     }
 
-//    protected static final VoxelShape NORTH_WALL_SHAPE = VoxelShapes.cuboid(0.1875, 0.0625, 0.875, 0.8125, 0.875, 1.0);
     protected static final VoxelShape NORTH_WALL_SHAPE = Block.createCuboidShape(3, 1, 14, 13, 14, 16);
     protected static final VoxelShape SOUTH_WALL_SHAPE = Block.createCuboidShape(3, 1, 0, 13, 14, 2);
     protected static final VoxelShape EAST_WALL_SHAPE = Block.createCuboidShape(0, 1, 3, 2, 14, 13);
     protected static final VoxelShape WEST_WALL_SHAPE = Block.createCuboidShape(14, 1, 3, 16, 14, 13);
 
-
     protected static final VoxelShape NORTH_CEILING_SHAPE = Block.createCuboidShape(3, 14, 1, 13, 16.0, 14);
     protected static final VoxelShape SOUTH_CEILING_SHAPE = Block.createCuboidShape(3, 14, 2, 13, 16.0, 15);
     protected static final VoxelShape EAST_CEILING_SHAPE = Block.createCuboidShape(2, 14, 3, 15, 16.0, 13);
     protected static final VoxelShape WEST_CEILING_SHAPE = Block.createCuboidShape(1, 14, 3, 14, 16.0, 13);
-
-
 
     protected static final VoxelShape NORTH_FLOOR_SHAPE = Block.createCuboidShape(3, 0.0, 2, 13, 2, 15);
     protected static final VoxelShape SOUTH_FLOOR_SHAPE = Block.createCuboidShape(3, 0.0, 1, 13, 2, 14);
@@ -179,45 +171,27 @@ public class KeypadBlock extends BlockWithEntity {
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         switch ((BlockFace)state.get(FACE)) {
             case FLOOR:
-                switch (((Direction)state.get(FACING))) {
-                    case EAST:
-                        return EAST_FLOOR_SHAPE;
-
-                    case WEST:
-                        return WEST_FLOOR_SHAPE;
-
-                    case SOUTH:
-                        return SOUTH_FLOOR_SHAPE;
-
-                    case NORTH:
-                    default:
-                        return NORTH_FLOOR_SHAPE;
-                }
+                return switch (((Direction) state.get(FACING))) {
+                    case EAST -> EAST_FLOOR_SHAPE;
+                    case WEST -> WEST_FLOOR_SHAPE;
+                    case SOUTH -> SOUTH_FLOOR_SHAPE;
+                    default -> NORTH_FLOOR_SHAPE;
+                };
             case WALL:
-                switch ((Direction)state.get(FACING)) {
-                    case EAST:
-                        return EAST_WALL_SHAPE;
-                    case WEST:
-                        return WEST_WALL_SHAPE;
-                    case SOUTH:
-                        return SOUTH_WALL_SHAPE;
-                    case NORTH:
-                    default:
-                        return NORTH_WALL_SHAPE;
-                }
+                return switch ((Direction) state.get(FACING)) {
+                    case EAST -> EAST_WALL_SHAPE;
+                    case WEST -> WEST_WALL_SHAPE;
+                    case SOUTH -> SOUTH_WALL_SHAPE;
+                    default -> NORTH_WALL_SHAPE;
+                };
             case CEILING:
             default:
-                switch (((Direction)state.get(FACING)))  {
-                    case EAST:
-                        return EAST_CEILING_SHAPE;
-                    case WEST:
-                        return WEST_CEILING_SHAPE;
-                    case SOUTH:
-                        return SOUTH_CEILING_SHAPE;
-                    case NORTH:
-                    default:
-                        return NORTH_CEILING_SHAPE;
-                }
+                return switch (((Direction) state.get(FACING))) {
+                    case EAST -> EAST_CEILING_SHAPE;
+                    case WEST -> WEST_CEILING_SHAPE;
+                    case SOUTH -> SOUTH_CEILING_SHAPE;
+                    default -> NORTH_CEILING_SHAPE;
+                };
         }
     }
 

@@ -29,9 +29,11 @@ public class Keypad implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+
 		ModBlocks.initialize();
 		ModBlockEntities.initialize();
 		PayloadTypeRegistry.playC2S().register(UpdateKeypadPayload.ID,UpdateKeypadPayload.CODEC);
+
 		ServerPlayNetworking.registerGlobalReceiver(UpdateKeypadPayload.ID, (payload, context) -> {
 			BlockEntity keypad = context.player().getWorld().getBlockEntity(payload.blockPos());
 			if(keypad instanceof KeypadBlockEntity keypadEntity) {

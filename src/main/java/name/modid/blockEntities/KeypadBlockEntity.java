@@ -38,7 +38,7 @@ public class KeypadBlockEntity extends BlockEntity {
         if (state.getBlock() instanceof KeypadBlock keypadBlock) {
             if(!this.passwordSet.isEmpty()){
                 world.setBlockState(pos, state.with(KeypadBlock.POWERED, Objects.equals(this.password, this.passwordSet)), 3);
-                keypadBlock.updateTargets(world, pos); // Ensure redstone updates
+                keypadBlock.updateTargets(world, pos);
                 world.scheduleBlockTick(pos,keypadBlock,100);
             }
         }
@@ -52,7 +52,6 @@ public class KeypadBlockEntity extends BlockEntity {
 
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-
         super.readNbt(nbt, registryLookup);
         password = nbt.getString("password");
         passwordSet = nbt.getString("passwordSet");

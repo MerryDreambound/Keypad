@@ -17,16 +17,15 @@ public class KeypadModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-//        blockStateModelGenerator.registerRotatable(ModBlocks.KEYPAD);
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(ModBlocks.KEYPAD).coordinate(BlockStateVariantMap
                 .create(KeypadBlock.FACE,KeypadBlock.FACING,KeypadBlock.POWERED,KeypadBlock.PASSWORD_SET)
                 .registerVariants((face, facing, powered,passwordSet)-> {
                     String model = powered? "block/keypad_on" : "block/keypad_off";
                     model = passwordSet ? model : "block/keypad";
 
-
                     VariantSettings.Rotation yRotation = null;
                     VariantSettings.Rotation xRotation = null;
+
                     switch (face) {
                         case CEILING -> {
                             xRotation = VariantSettings.Rotation.R90;
@@ -50,8 +49,6 @@ public class KeypadModelProvider extends FabricModelProvider {
                     }
                     return Collections.singletonList(BlockStateVariant.create().put(VariantSettings.MODEL, Identifier.of("keypad", model)).put(VariantSettings.Y, yRotation).put(VariantSettings.X, xRotation));
                 })));
-
-//        blockStateModelGenerator.blockStateCollector.accept(MultipartBlockStateSupplier.create(ModBlocks.KEYPAD).with(When.create().set(Properties.FACING, Direction.NORTH),BlockStateVariant.create().put(VariantSettings.X,VariantSettings.Rotation.R0)));
     }
 
     private VariantSettings.Rotation getRotation(Direction facing, VariantSettings.Rotation yRotation) {
@@ -63,7 +60,6 @@ public class KeypadModelProvider extends FabricModelProvider {
         }
         return yRotation;
     }
-
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
