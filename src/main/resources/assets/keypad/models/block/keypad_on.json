@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "textures": {
     "1": "keypad:block/keypadtexture",
-    "3": "keypad:block/red_light",
+    "3": "keypad:block/green_light",
     "particle": "keypad:block/keypadtexture"
   },
   "elements": [

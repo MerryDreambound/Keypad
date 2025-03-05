@@ -1,6 +1,7 @@
 package name.modid.blocks;
 
 import com.mojang.serialization.MapCodec;
+import name.modid.Keypad;
 import name.modid.blockEntities.KeypadBlockEntity;
 import name.modid.ui.CustomPlayerInterface;
 import net.minecraft.block.*;
@@ -8,14 +9,17 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.BlockFace;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -26,15 +30,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class KeypadBlock extends BlockWithEntity {
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return createCodec(KeypadBlock::new);
+    }
     public static final BooleanProperty POWERED = Properties.POWERED;
     public static final EnumProperty<BlockFace> FACE = Properties.BLOCK_FACE;
     public static final EnumProperty<Direction> FACING = HorizontalFacingBlock.FACING;
-//    public static final BooleanProperty PASSWORD_SET = BooleanProperty.of("password_set");
+    public static final BooleanProperty PASSWORD_SET = BooleanProperty.of("password_set");
 
     public KeypadBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.getDefaultState().with(POWERED, true)
-                .with(FACING,Direction.NORTH).with(FACE, BlockFace.WALL));
+                .with(FACING,Direction.NORTH).with(FACE, BlockFace.WALL).with(PASSWORD_SET, false));
     }
 
     @Override
@@ -42,10 +50,7 @@ public class KeypadBlock extends BlockWithEntity {
         this.updateTargets(world, pos);
     }
 
-    @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return createCodec(KeypadBlock::new);
-    }
+
 
     @Nullable
     @Override
@@ -88,8 +93,12 @@ public class KeypadBlock extends BlockWithEntity {
             return super.onUse(state, world, pos, player, hit);
         }
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (world.isClient() && blockEntity instanceof KeypadBlockEntity) {
-            ((CustomPlayerInterface) player).openKeypadScreen(blockEntity);
+        if (world.isClient()) {
+            if(state.get(PASSWORD_SET) && state.get(POWERED)) {
+                player.sendMessage(Text.translatable("chat."+ Keypad.MOD_ID+".active"),false);
+            }else{
+                ((CustomPlayerInterface) player).openKeypadScreen(blockEntity);
+            }
         }else{
             world.setBlockState(pos, state.with(POWERED, Objects.equals(keypadBlockEntity.getPassword(), keypadBlockEntity.getPasswordSet())),1);
             updateTargets(world,pos);
@@ -113,6 +122,16 @@ public class KeypadBlock extends BlockWithEntity {
         for (Direction direction : Direction.values()) {
             updateTarget(world, pos, direction);
         }
+    }
+
+    @Override
+    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random){
+        KeypadBlockEntity entity = (KeypadBlockEntity) world.getBlockEntity(pos);
+        if (state.get(Properties.POWERED)) {
+            assert entity != null;
+            entity.setPassword("");
+        }
+        super.scheduledTick(state,world,pos,random);
     }
 
     @Override
@@ -155,15 +174,6 @@ public class KeypadBlock extends BlockWithEntity {
     protected static final VoxelShape SOUTH_FLOOR_SHAPE = Block.createCuboidShape(3, 0.0, 1, 13, 2, 14);
     protected static final VoxelShape EAST_FLOOR_SHAPE = Block.createCuboidShape(1, 0.0, 3, 14, 2, 13);
     protected static final VoxelShape WEST_FLOOR_SHAPE = Block.createCuboidShape(2, 0.0, 3, 15, 2, 13);
-
-//    @Override
-//    protected VoxelShape getSidesShape(){
-//
-//    }
-
-//    @Override
-//    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-//    }
 
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
@@ -215,6 +225,7 @@ public class KeypadBlock extends BlockWithEntity {
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder){
         builder.add(POWERED)
                 .add(FACING)
-                .add(FACE);
+                .add(FACE)
+                .add(PASSWORD_SET);
     }
 }

@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "textures": {
     "1": "keypad:block/keypadtexture",
-    "3": "keypad:block/green_light",
+    "3": "keypad:block/orange_light",
     "particle": "keypad:block/keypadtexture"
   },
   "elements": [
@@ -210,8 +210,8 @@
       "translation": [0, 3.5, 3.25]
     },
     "ground": {
-      "rotation": [43, 180, 0],
-      "translation": [0, -3.75, 2],
+      "rotation": [90, 0, 0],
+      "translation": [0, 2.75, 0],
       "scale": [0.5, 0.5, 0.5]
     },
     "gui": {
