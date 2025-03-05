@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#I#",
+    "#R#"
+  ],
+  "key": {
+    "#": "minecraft:stone_button",
+    "R": "minecraft:redstone_torch",
+    "I": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "keypad:keypad",
+    "count": 1
+  }
+}
