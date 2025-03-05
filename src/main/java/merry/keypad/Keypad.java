@@ -1,10 +1,10 @@
-package name.modid;
+package merry.keypad;
 
-import name.modid.blockEntities.KeypadBlockEntity;
-import name.modid.blockEntities.ModBlockEntities;
-import name.modid.blocks.KeypadBlock;
-import name.modid.blocks.ModBlocks;
-import name.modid.network.UpdateKeypadPayload;
+import merry.keypad.blockEntities.KeypadBlockEntity;
+import merry.keypad.blockEntities.ModBlockEntities;
+import merry.keypad.blocks.KeypadBlock;
+import merry.keypad.blocks.ModBlocks;
+import merry.keypad.network.UpdateKeypadPayload;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -24,8 +24,6 @@ import java.util.Objects;
 
 public class Keypad implements ModInitializer {
 	public static final String MOD_ID = "keypad";
-
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
 	public void onInitialize() {

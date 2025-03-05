@@ -1,4 +1,4 @@
-package name.modid.network;
+package merry.keypad.network;
 
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;

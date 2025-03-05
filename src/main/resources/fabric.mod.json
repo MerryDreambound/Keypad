@@ -3,26 +3,25 @@
 	"id": "keypad",
 	"version": "${version}",
 	"name": "Keypad",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Adds a Keypad block, which allows you to input a password for enabling redstone circuitry",
 	"authors": [
-		"Me!"
+		"MerryDreambound"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/MerryDreambound/Keypad"
 	},
-	"license": "CC0-1.0",
+	"license": "LGPL 3.0",
 	"icon": "assets/keypad/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"name.modid.Keypad"
+			"merry.keypad.Keypad"
 		],
 		"client": [
-			"name.modid.KeypadClient"
+			"merry.keypad.KeypadClient"
 		],
 		"fabric-datagen": [
-			"name.modid.KeypadDataGenerator"
+			"merry.keypad.KeypadDataGenerator"
 		]
 	},
 	"mixins": [
@@ -37,8 +36,5 @@
 		"minecraft": "~1.21.4",
 		"java": ">=21",
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }

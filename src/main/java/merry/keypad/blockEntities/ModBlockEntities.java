@@ -1,7 +1,7 @@
-package name.modid.blockEntities;
+package merry.keypad.blockEntities;
 
-import name.modid.Keypad;
-import name.modid.blocks.ModBlocks;
+import merry.keypad.Keypad;
+import merry.keypad.blocks.ModBlocks;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;

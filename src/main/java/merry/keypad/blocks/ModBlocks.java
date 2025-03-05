@@ -1,6 +1,6 @@
-package name.modid.blocks;
+package merry.keypad.blocks;
 
-import name.modid.Keypad;
+import merry.keypad.Keypad;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;

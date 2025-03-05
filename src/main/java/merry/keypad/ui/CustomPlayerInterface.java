@@ -1,6 +1,6 @@
-package name.modid.ui;
+package merry.keypad.ui;
 
-import name.modid.blockEntities.KeypadBlockEntity;
+import merry.keypad.blockEntities.KeypadBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 
 public interface CustomPlayerInterface {

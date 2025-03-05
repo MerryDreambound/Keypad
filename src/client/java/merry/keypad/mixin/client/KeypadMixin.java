@@ -1,8 +1,8 @@
-package name.modid.mixin.client;
+package merry.keypad.mixin.client;
 
-import name.modid.blockEntities.KeypadBlockEntity;
-import name.modid.ui.CustomPlayerInterface;
-import name.modid.ui.KeypadScreen;
+import merry.keypad.blockEntities.KeypadBlockEntity;
+import merry.keypad.ui.CustomPlayerInterface;
+import merry.keypad.ui.KeypadScreen;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;

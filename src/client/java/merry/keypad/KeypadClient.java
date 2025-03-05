@@ -1,4 +1,4 @@
-package name.modid;
+package merry.keypad;
 
 import net.fabricmc.api.ClientModInitializer;
 

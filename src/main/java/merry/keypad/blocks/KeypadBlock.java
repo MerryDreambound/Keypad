@@ -1,9 +1,9 @@
-package name.modid.blocks;
+package merry.keypad.blocks;
 
 import com.mojang.serialization.MapCodec;
-import name.modid.Keypad;
-import name.modid.blockEntities.KeypadBlockEntity;
-import name.modid.ui.CustomPlayerInterface;
+import merry.keypad.Keypad;
+import merry.keypad.blockEntities.KeypadBlockEntity;
+import merry.keypad.ui.CustomPlayerInterface;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.BlockFace;
@@ -72,14 +72,11 @@ public class KeypadBlock extends BlockWithEntity {
     }
 
     protected static Direction getDirection(BlockState state) {
-        switch ((BlockFace)state.get(FACE)) {
-            case CEILING:
-                return Direction.DOWN;
-            case FLOOR:
-                return Direction.UP;
-            default:
-                return state.get(FACING);
-        }
+        return switch ((BlockFace) state.get(FACE)) {
+            case CEILING -> Direction.DOWN;
+            case FLOOR -> Direction.UP;
+            default -> state.get(FACING);
+        };
     }
 
     @Override
@@ -169,30 +166,26 @@ public class KeypadBlock extends BlockWithEntity {
 
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        switch ((BlockFace)state.get(FACE)) {
-            case FLOOR:
-                return switch (((Direction) state.get(FACING))) {
-                    case EAST -> EAST_FLOOR_SHAPE;
-                    case WEST -> WEST_FLOOR_SHAPE;
-                    case SOUTH -> SOUTH_FLOOR_SHAPE;
-                    default -> NORTH_FLOOR_SHAPE;
-                };
-            case WALL:
-                return switch ((Direction) state.get(FACING)) {
-                    case EAST -> EAST_WALL_SHAPE;
-                    case WEST -> WEST_WALL_SHAPE;
-                    case SOUTH -> SOUTH_WALL_SHAPE;
-                    default -> NORTH_WALL_SHAPE;
-                };
-            case CEILING:
-            default:
-                return switch (((Direction) state.get(FACING))) {
-                    case EAST -> EAST_CEILING_SHAPE;
-                    case WEST -> WEST_CEILING_SHAPE;
-                    case SOUTH -> SOUTH_CEILING_SHAPE;
-                    default -> NORTH_CEILING_SHAPE;
-                };
-        }
+        return switch ((BlockFace) state.get(FACE)) {
+            case FLOOR -> switch (((Direction) state.get(FACING))) {
+                case EAST -> EAST_FLOOR_SHAPE;
+                case WEST -> WEST_FLOOR_SHAPE;
+                case SOUTH -> SOUTH_FLOOR_SHAPE;
+                default -> NORTH_FLOOR_SHAPE;
+            };
+            case WALL -> switch ((Direction) state.get(FACING)) {
+                case EAST -> EAST_WALL_SHAPE;
+                case WEST -> WEST_WALL_SHAPE;
+                case SOUTH -> SOUTH_WALL_SHAPE;
+                default -> NORTH_WALL_SHAPE;
+            };
+            default -> switch (((Direction) state.get(FACING))) {
+                case EAST -> EAST_CEILING_SHAPE;
+                case WEST -> WEST_CEILING_SHAPE;
+                case SOUTH -> SOUTH_CEILING_SHAPE;
+                default -> NORTH_CEILING_SHAPE;
+            };
+        };
     }
 
     @Override

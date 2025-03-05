@@ -1,6 +1,6 @@
-package name.modid.blockEntities;
+package merry.keypad.blockEntities;
 
-import name.modid.blocks.KeypadBlock;
+import merry.keypad.blocks.KeypadBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;

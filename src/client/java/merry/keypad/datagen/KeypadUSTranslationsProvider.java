@@ -1,6 +1,6 @@
-package name.modid.datagen;
+package merry.keypad.datagen;
 
-import name.modid.Keypad;
+import merry.keypad.Keypad;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;

@@ -1,6 +1,6 @@
-package name.modid.network;
+package merry.keypad.network;
 
-import name.modid.Keypad;
+import merry.keypad.Keypad;
 import net.minecraft.util.Identifier;
 
 public class NetworkingConstants {

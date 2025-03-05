@@ -1,7 +1,7 @@
-package name.modid.datagen;
+package merry.keypad.datagen;
 
-import name.modid.blocks.KeypadBlock;
-import name.modid.blocks.ModBlocks;
+import merry.keypad.blocks.KeypadBlock;
+import merry.keypad.blocks.ModBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.*;

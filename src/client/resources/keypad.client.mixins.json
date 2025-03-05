@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "name.modid.mixin.client",
+  "package": "merry.keypad.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
     "KeypadMixin"

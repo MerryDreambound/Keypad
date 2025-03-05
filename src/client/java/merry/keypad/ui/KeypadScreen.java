@@ -1,8 +1,8 @@
-package name.modid.ui;
+package merry.keypad.ui;
 
-import name.modid.Keypad;
-import name.modid.blockEntities.KeypadBlockEntity;
-import name.modid.network.UpdateKeypadPayload;
+import merry.keypad.Keypad;
+import merry.keypad.blockEntities.KeypadBlockEntity;
+import merry.keypad.network.UpdateKeypadPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -33,11 +33,13 @@ public class KeypadScreen extends Screen {
         this.addDrawableChild(keypadTextField);
 
         ButtonWidget cancelButton = ButtonWidget.builder(Text.translatable("screen."+Keypad.MOD_ID+".cancel"),(btn)->{
+            assert this.client != null;
             this.client.setScreen(null);
         }).dimensions(this.width/2 - textWidth/2, this.height/2 + buttonHeight/2,buttonWidth,buttonHeight).build();
 
         ButtonWidget acceptButton = ButtonWidget.builder(Text.translatable("screen."+Keypad.MOD_ID+".accept"),(btn)->{
             setPassword(keypadTextField.getText());
+            assert this.client != null;
             this.client.setScreen(null);
         }).dimensions(this.width/2 - textWidth/2 + buttonWidth, this.height/2 + buttonHeight/2,buttonWidth,buttonHeight).build();
 
