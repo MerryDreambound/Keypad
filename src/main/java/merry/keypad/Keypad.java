@@ -39,11 +39,11 @@ public class Keypad implements ModInitializer {
 						context.player().displayClientMessage(Component.translatable("chat."+Keypad.MOD_ID+".emptypassword","The password is empty and cannot be set") ,false);
 
 					}else{
-						keypadEntity.setPasswordSet(payload.password().describeConstable());
+						keypadEntity.setPasswordSet(payload.password());
 						Level world = context.player().level();
 						BlockState state = world.getBlockState(payload.blockPos());
 						world.setBlock(payload.blockPos(), state.setValue(KeypadBlock.PASSWORD_SET,true),3);
-						keypadEntity.setPassword(Optional.empty(),false);
+						keypadEntity.setPassword(null,false);
 						context.player().sendSystemMessage(Component.translatable("chat."+Keypad.MOD_ID+".setpassword",
 								Component.literal(payload.password()).setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN).withUnderlined(true)
 								.withClickEvent(new ClickEvent.CopyToClipboard(payload.password()))
@@ -52,7 +52,7 @@ public class Keypad implements ModInitializer {
 					}
 
 				}
-				keypadEntity.setPassword(payload.password().describeConstable(),true);
+				keypadEntity.setPassword(payload.password(),true);
 			}
 		});
 	}

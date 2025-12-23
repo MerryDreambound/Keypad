@@ -107,7 +107,8 @@ public class KeypadBlock extends BaseEntityBlock {
     @Override
     protected void affectNeighborsAfterRemoval(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, boolean moved) {
         if (!moved && (Boolean)blockState.getValue(POWERED)) {
-            this.affectNeighborsAfterRemoval(blockState, serverLevel, blockPos,moved);
+            super.affectNeighborsAfterRemoval(blockState, serverLevel, blockPos,moved);
+            this.updateTargets(serverLevel,blockPos);
         }
     }
 
@@ -129,7 +130,7 @@ public class KeypadBlock extends BaseEntityBlock {
         KeypadBlockEntity entity = (KeypadBlockEntity) world.getBlockEntity(pos);
         if (state.getValue(BlockStateProperties.POWERED)) {
             assert entity != null;
-            entity.setPassword(Optional.empty(),false);
+            entity.setPassword(null,false);
         }
         super.tick(state,world,pos,random);
     }

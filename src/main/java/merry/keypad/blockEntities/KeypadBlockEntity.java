@@ -7,36 +7,35 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import java.util.Objects;
-import java.util.Optional;
 
 public class KeypadBlockEntity extends BlockEntity {
-    private Optional<String> password = Optional.empty();
-    private Optional<String> passwordSet =Optional.empty();
+    private String password = "";
+    private String passwordSet = "";
 
     public KeypadBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.COUNTER_BLOCK_ENTITY, pos, state);
     }
 
-    public Optional<String> getPassword() {
+    public String getPassword() {
         return password;
     }
-    public Optional<String> getPasswordSet() {
+    public String getPasswordSet() {
         return passwordSet;
     }
 
-    public void setPasswordSet(Optional<String> passwordSet) {
+    public void setPasswordSet(String passwordSet) {
         this.passwordSet = passwordSet;
-        this.password = Optional.empty();
+        this.password = "";
         setChanged();
     }
-    public void setPassword(Optional<String> password, Boolean scheduleTick) {
+    public void setPassword(String password, Boolean scheduleTick) {
         this.password = password;
         setChanged();
 
         assert level != null;
         BlockState state = level.getBlockState(worldPosition);
         if (state.getBlock() instanceof KeypadBlock keypadBlock) {
-            if(this.passwordSet.isPresent()){
+            if(!this.passwordSet.isEmpty()){
                 level.setBlock(worldPosition, state.setValue(KeypadBlock.POWERED, Objects.equals(this.password, this.passwordSet)), 3);
                 keypadBlock.updateTargets(level, worldPosition);
                 if(scheduleTick){
@@ -56,8 +55,8 @@ public class KeypadBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
         super.loadAdditional(nbt, registryLookup);
-        password = nbt.getString("password");
-        passwordSet = nbt.getString("passwordSet");
+        password = nbt.getString("password").toString();
+        passwordSet = nbt.getString("passwordSet").toString();
 
     }
 

@@ -10,22 +10,17 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
-import net.minecraft.client.data.models.blockstates.PropertyValueList;
-import net.minecraft.client.renderer.block.model.Variant;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.core.Direction;
-import net.minecraft.data.BlockFamily;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Rotation;
-
-import java.util.Collections;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
 
 public class KeypadModelProvider extends FabricModelProvider {
 
     public static final VariantMutator NOP = variant -> variant;
-    public static final VariantMutator UV_LOCK = VariantMutator.UV_LOCK.withValue(true);
     public static final VariantMutator X_ROT_90 = VariantMutator.X_ROT.withValue(Quadrant.R90);
-    public static final VariantMutator X_ROT_180 = VariantMutator.X_ROT.withValue(Quadrant.R180);
     public static final VariantMutator X_ROT_270 = VariantMutator.X_ROT.withValue(Quadrant.R270);
     public static final VariantMutator Y_ROT_90 = VariantMutator.Y_ROT.withValue(Quadrant.R90);
     public static final VariantMutator Y_ROT_180 = VariantMutator.Y_ROT.withValue(Quadrant.R180);
@@ -37,50 +32,33 @@ public class KeypadModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
-        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.KEYPAD).with(PropertyDispatch
-                .initial(KeypadBlock.FACE,KeypadBlock.FACING,KeypadBlock.POWERED,KeypadBlock.PASSWORD_SET)
-                .generate((face, facing, powered,passwordSet)-> {
-                    String model = powered? "block/keypad_on" : "block/keypad_off";
-                    model = passwordSet ? model : "block/keypad";
-                    VariantMutator yRotation = NOP;
-                    VariantMutator xRotation = NOP;
-
-
-                    switch (face) {
-                        case CEILING -> {
-                            xRotation = X_ROT_90;
-                            yRotation = getRotation(facing, yRotation);
+        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.KEYPAD).with(
+                PropertyDispatch.initial(KeypadBlock.PASSWORD_SET,KeypadBlock.POWERED).generate((passwordSet,powered) ->{
+                    if(passwordSet){
+                        if (powered){
+                            return plainVariant(ModelLocationUtils.getModelLocation(ModBlocks.KEYPAD,"_on"));
+                        }else{
+                            return plainVariant(ModelLocationUtils.getModelLocation(ModBlocks.KEYPAD,"_off"));
                         }
-                        case WALL -> {
-                            xRotation = NOP;
-                            switch(facing) {
-                                case NORTH -> yRotation = NOP;
-                                case SOUTH -> yRotation = Y_ROT_180;
-                                case WEST -> yRotation = Y_ROT_270;
-                                case EAST -> yRotation = Y_ROT_90;
-                            }
-                        }
-                        case FLOOR -> {
-                            {
-                                xRotation = X_ROT_270;
-                                yRotation = getRotation(facing, yRotation);
-                            }
-                        }
+                    }else {
+                        return plainVariant(ModelLocationUtils.getModelLocation(ModBlocks.KEYPAD));
                     }
-//                    return VariantMutator.MODEL.withValue(ResourceLocation.fromNamespaceAndPath("keypad", model)).then(VariantMutator.Y_ROT.withValue(yRotation));
-//                    new Variant(ResourceLocation.fromNamespaceAndPath("keypad", model)).with(yRotation).with(xRotation);
-                    return new Variant(ResourceLocation.fromNamespaceAndPath("keypad", model)).with(yRotation).with(xRotation);
-                })));
-    }
-
-    private VariantMutator getRotation(Direction facing, VariantMutator yRotation) {
-        switch(facing) {
-            case NORTH -> yRotation = Y_ROT_180;
-            case SOUTH -> yRotation = NOP;
-            case WEST -> yRotation = Y_ROT_90;
-            case EAST -> yRotation = Y_ROT_270;
-        }
-        return yRotation;
+                })
+        ).with(
+                PropertyDispatch.modify(BlockStateProperties.ATTACH_FACE, BlockStateProperties.HORIZONTAL_FACING)
+                        .select(AttachFace.CEILING, Direction.NORTH, X_ROT_90.then(Y_ROT_180))
+                        .select(AttachFace.CEILING, Direction.EAST, X_ROT_90.then(Y_ROT_270))
+                        .select(AttachFace.CEILING, Direction.SOUTH, X_ROT_90)
+                        .select(AttachFace.CEILING, Direction.WEST, X_ROT_90.then(Y_ROT_90))
+                        .select(AttachFace.FLOOR, Direction.NORTH, X_ROT_270.then(Y_ROT_180))
+                        .select(AttachFace.FLOOR, Direction.EAST, X_ROT_270.then(Y_ROT_270))
+                        .select(AttachFace.FLOOR, Direction.SOUTH, X_ROT_270)
+                        .select(AttachFace.FLOOR, Direction.WEST, X_ROT_270.then(Y_ROT_90))
+                        .select(AttachFace.WALL, Direction.NORTH, NOP)
+                        .select(AttachFace.WALL, Direction.EAST, NOP.then(Y_ROT_90))
+                        .select(AttachFace.WALL, Direction.SOUTH, NOP.then(Y_ROT_180))
+                        .select(AttachFace.WALL, Direction.WEST, NOP.then(Y_ROT_270))
+        ));
     }
 
     @Override
