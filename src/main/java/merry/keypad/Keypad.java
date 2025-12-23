@@ -9,16 +9,14 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
 
@@ -33,22 +31,22 @@ public class Keypad implements ModInitializer {
 		PayloadTypeRegistry.playC2S().register(UpdateKeypadPayload.ID,UpdateKeypadPayload.CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(UpdateKeypadPayload.ID, (payload, context) -> {
-			BlockEntity keypad = context.player().getWorld().getBlockEntity(payload.blockPos());
+			BlockEntity keypad = context.player().level().getBlockEntity(payload.blockPos());
 			if(keypad instanceof KeypadBlockEntity keypadEntity) {
 				if(Objects.equals(keypadEntity.getPasswordSet(), "")){
 					if(payload.password().isEmpty()){
-						context.player().sendMessage(Text.translatable("chat."+Keypad.MOD_ID+".emptypassword","The password is empty and cannot be set") ,false);
+						context.player().displayClientMessage(Component.translatable("chat."+Keypad.MOD_ID+".emptypassword","The password is empty and cannot be set") ,false);
 
 					}else{
 						keypadEntity.setPasswordSet(payload.password());
-						World world = context.player().getWorld();
+						Level world = context.player().level();
 						BlockState state = world.getBlockState(payload.blockPos());
-						world.setBlockState(payload.blockPos(), state.with(KeypadBlock.PASSWORD_SET,true),3);
+						world.setBlock(payload.blockPos(), state.setValue(KeypadBlock.PASSWORD_SET,true),3);
 						keypadEntity.setPassword("",false);
-						context.player().sendMessage(Text.translatable("chat."+Keypad.MOD_ID+".setpassword",
-								Text.literal(payload.password()).setStyle(Style.EMPTY.withColor(Formatting.GREEN).withUnderline(true)
+						context.player().sendSystemMessage(Component.translatable("chat."+Keypad.MOD_ID+".setpassword",
+								Component.literal(payload.password()).setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN).withUnderlined(true)
 								.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,payload.password()))
-								.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.translatable("chat."+Keypad.MOD_ID+".hover.copyText")))) ,false));
+								.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Component.translatable("chat."+Keypad.MOD_ID+".hover.copyText")))) ,false));
 						return;
 					}
 

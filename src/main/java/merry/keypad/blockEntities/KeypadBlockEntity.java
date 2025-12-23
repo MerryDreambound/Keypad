@@ -1,12 +1,11 @@
 package merry.keypad.blockEntities;
 
 import merry.keypad.blocks.KeypadBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.math.BlockPos;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import java.util.Objects;
 
 public class KeypadBlockEntity extends BlockEntity {
@@ -27,35 +26,35 @@ public class KeypadBlockEntity extends BlockEntity {
     public void setPasswordSet(String passwordSet) {
         this.passwordSet = passwordSet;
         this.password = "";
-        markDirty();
+        setChanged();
     }
     public void setPassword(String password, Boolean scheduleTick) {
         this.password = password;
-        markDirty();
+        setChanged();
 
-        assert world != null;
-        BlockState state = world.getBlockState(pos);
+        assert level != null;
+        BlockState state = level.getBlockState(worldPosition);
         if (state.getBlock() instanceof KeypadBlock keypadBlock) {
             if(!this.passwordSet.isEmpty()){
-                world.setBlockState(pos, state.with(KeypadBlock.POWERED, Objects.equals(this.password, this.passwordSet)), 3);
-                keypadBlock.updateTargets(world, pos);
+                level.setBlock(worldPosition, state.setValue(KeypadBlock.POWERED, Objects.equals(this.password, this.passwordSet)), 3);
+                keypadBlock.updateTargets(level, worldPosition);
                 if(scheduleTick){
-                    world.scheduleBlockTick(pos,keypadBlock,100);
+                    level.scheduleTick(worldPosition,keypadBlock,100);
                 }
             }
         }
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        super.writeNbt(nbt, registryLookup);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
+        super.saveAdditional(nbt, registryLookup);
         nbt.putString("passwordSet", passwordSet);
         nbt.putString("password", password);
     }
 
     @Override
-    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        super.readNbt(nbt, registryLookup);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
+        super.loadAdditional(nbt, registryLookup);
         password = nbt.getString("password");
         passwordSet = nbt.getString("passwordSet");
 

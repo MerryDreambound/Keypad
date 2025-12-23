@@ -5,8 +5,14 @@ import merry.keypad.blocks.ModBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.*;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.blockstates.Variant;
+import net.minecraft.client.data.models.blockstates.VariantProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collections;
 
@@ -16,53 +22,53 @@ public class KeypadModelProvider extends FabricModelProvider {
     }
 
     @Override
-    public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(ModBlocks.KEYPAD).coordinate(BlockStateVariantMap
-                .create(KeypadBlock.FACE,KeypadBlock.FACING,KeypadBlock.POWERED,KeypadBlock.PASSWORD_SET)
-                .registerVariants((face, facing, powered,passwordSet)-> {
+    public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
+        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(ModBlocks.KEYPAD).with(PropertyDispatch
+                .properties(KeypadBlock.FACE,KeypadBlock.FACING,KeypadBlock.POWERED,KeypadBlock.PASSWORD_SET)
+                .generate((face, facing, powered,passwordSet)-> {
                     String model = powered? "block/keypad_on" : "block/keypad_off";
                     model = passwordSet ? model : "block/keypad";
 
-                    VariantSettings.Rotation yRotation = null;
-                    VariantSettings.Rotation xRotation = null;
+                    VariantProperties.Rotation yRotation = null;
+                    VariantProperties.Rotation xRotation = null;
 
                     switch (face) {
                         case CEILING -> {
-                            xRotation = VariantSettings.Rotation.R90;
+                            xRotation = VariantProperties.Rotation.R90;
                             yRotation = getRotation(facing, yRotation);
                         }
                         case WALL -> {
-                            xRotation = VariantSettings.Rotation.R0;
+                            xRotation = VariantProperties.Rotation.R0;
                             switch(facing) {
-                                case NORTH -> yRotation = VariantSettings.Rotation.R0;
-                                case SOUTH -> yRotation = VariantSettings.Rotation.R180;
-                                case WEST -> yRotation = VariantSettings.Rotation.R270;
-                                case EAST -> yRotation = VariantSettings.Rotation.R90;
+                                case NORTH -> yRotation = VariantProperties.Rotation.R0;
+                                case SOUTH -> yRotation = VariantProperties.Rotation.R180;
+                                case WEST -> yRotation = VariantProperties.Rotation.R270;
+                                case EAST -> yRotation = VariantProperties.Rotation.R90;
                             }
                         }
                         case FLOOR -> {
                             {
-                                xRotation = VariantSettings.Rotation.R270;
+                                xRotation = VariantProperties.Rotation.R270;
                                 yRotation = getRotation(facing, yRotation);
                             }
                         }
                     }
-                    return Collections.singletonList(BlockStateVariant.create().put(VariantSettings.MODEL, Identifier.of("keypad", model)).put(VariantSettings.Y, yRotation).put(VariantSettings.X, xRotation));
+                    return Variant.variant().with(VariantProperties.MODEL, ResourceLocation.fromNamespaceAndPath("keypad", model)).with(VariantProperties.Y_ROT, yRotation).with(VariantProperties.X_ROT, xRotation);
                 })));
     }
 
-    private VariantSettings.Rotation getRotation(Direction facing, VariantSettings.Rotation yRotation) {
+    private VariantProperties.Rotation getRotation(Direction facing, VariantProperties.Rotation yRotation) {
         switch(facing) {
-            case NORTH -> yRotation = VariantSettings.Rotation.R180;
-            case SOUTH -> yRotation = VariantSettings.Rotation.R0;
-            case WEST -> yRotation = VariantSettings.Rotation.R90;
-            case EAST -> yRotation = VariantSettings.Rotation.R270;
+            case NORTH -> yRotation = VariantProperties.Rotation.R180;
+            case SOUTH -> yRotation = VariantProperties.Rotation.R0;
+            case WEST -> yRotation = VariantProperties.Rotation.R90;
+            case EAST -> yRotation = VariantProperties.Rotation.R270;
         }
         return yRotation;
     }
 
     @Override
-    public void generateItemModels(ItemModelGenerator itemModelGenerator) {
+    public void generateItemModels(ItemModelGenerators itemModelGenerator) {
     }
 
     @Override

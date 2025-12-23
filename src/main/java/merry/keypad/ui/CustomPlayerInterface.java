@@ -1,7 +1,7 @@
 package merry.keypad.ui;
 
 import merry.keypad.blockEntities.KeypadBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface CustomPlayerInterface {
     default void openKeypadScreen(KeypadBlockEntity keypad) {

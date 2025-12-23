@@ -1,8 +1,8 @@
 package merry.keypad.network;
 
 import merry.keypad.Keypad;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public class NetworkingConstants {
-    public static final Identifier UPDATE_KEYPAD = Identifier.of(Keypad.MOD_ID, "update_keypad");
+    public static final ResourceLocation UPDATE_KEYPAD = ResourceLocation.fromNamespaceAndPath(Keypad.MOD_ID, "update_keypad");
 }

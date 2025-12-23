@@ -3,21 +3,21 @@ package merry.keypad.mixin.client;
 import merry.keypad.blockEntities.KeypadBlockEntity;
 import merry.keypad.ui.CustomPlayerInterface;
 import merry.keypad.ui.KeypadScreen;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(ClientPlayerEntity.class)
+@Mixin(LocalPlayer.class)
 
 public class KeypadMixin implements CustomPlayerInterface {
     @Unique
     private void openCustomScreen(BlockEntity entity) {
         if (entity instanceof KeypadBlockEntity) {
-            MinecraftClient client = MinecraftClient.getInstance();
-            client.setScreen(new KeypadScreen(Text.of("Keypad Screen"), (KeypadBlockEntity) entity));
+            Minecraft client = Minecraft.getInstance();
+            client.setScreen(new KeypadScreen(Component.nullToEmpty("Keypad Screen"), (KeypadBlockEntity) entity));
 
         }
     }
