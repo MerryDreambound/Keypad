@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class Keypad implements ModInitializer {
 	public static final String MOD_ID = "keypad";
@@ -38,20 +39,20 @@ public class Keypad implements ModInitializer {
 						context.player().displayClientMessage(Component.translatable("chat."+Keypad.MOD_ID+".emptypassword","The password is empty and cannot be set") ,false);
 
 					}else{
-						keypadEntity.setPasswordSet(payload.password());
+						keypadEntity.setPasswordSet(payload.password().describeConstable());
 						Level world = context.player().level();
 						BlockState state = world.getBlockState(payload.blockPos());
 						world.setBlock(payload.blockPos(), state.setValue(KeypadBlock.PASSWORD_SET,true),3);
-						keypadEntity.setPassword("",false);
+						keypadEntity.setPassword(Optional.empty(),false);
 						context.player().sendSystemMessage(Component.translatable("chat."+Keypad.MOD_ID+".setpassword",
 								Component.literal(payload.password()).setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN).withUnderlined(true)
-								.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,payload.password()))
-								.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Component.translatable("chat."+Keypad.MOD_ID+".hover.copyText")))) ,false));
+								.withClickEvent(new ClickEvent.CopyToClipboard(payload.password()))
+								.withHoverEvent(new HoverEvent.ShowText(Component.translatable("chat."+Keypad.MOD_ID+".hover.copyText")))) ,false));
 						return;
 					}
 
 				}
-				keypadEntity.setPassword(payload.password(),true);
+				keypadEntity.setPassword(payload.password().describeConstable(),true);
 			}
 		});
 	}

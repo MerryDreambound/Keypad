@@ -32,6 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class KeypadBlock extends BaseEntityBlock {
     @Override
@@ -102,11 +103,12 @@ public class KeypadBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
+
     @Override
-    protected void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
-        if (moved || state.is(newState.getBlock())) return;
-        super.onRemove(state, world, pos, newState, moved);
-        this.updateTargets(world, pos);
+    protected void affectNeighborsAfterRemoval(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, boolean moved) {
+        if (!moved && (Boolean)blockState.getValue(POWERED)) {
+            this.affectNeighborsAfterRemoval(blockState, serverLevel, blockPos,moved);
+        }
     }
 
     public void updateTarget(Level world, BlockPos pos, Direction direction) {
@@ -127,7 +129,7 @@ public class KeypadBlock extends BaseEntityBlock {
         KeypadBlockEntity entity = (KeypadBlockEntity) world.getBlockEntity(pos);
         if (state.getValue(BlockStateProperties.POWERED)) {
             assert entity != null;
-            entity.setPassword("",false);
+            entity.setPassword(Optional.empty(),false);
         }
         super.tick(state,world,pos,random);
     }
