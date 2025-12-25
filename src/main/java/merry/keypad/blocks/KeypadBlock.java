@@ -32,7 +32,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public class KeypadBlock extends BaseEntityBlock {
     @Override
@@ -130,7 +129,7 @@ public class KeypadBlock extends BaseEntityBlock {
         KeypadBlockEntity entity = (KeypadBlockEntity) world.getBlockEntity(pos);
         if (state.getValue(BlockStateProperties.POWERED)) {
             assert entity != null;
-            entity.setPassword(null,false);
+            entity.setPassword("",false);
         }
         super.tick(state,world,pos,random);
     }
