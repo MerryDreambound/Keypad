@@ -29,6 +29,9 @@ public class KeypadBlockEntity extends BlockEntity {
         setChanged();
     }
     public void setPassword(String password, Boolean scheduleTick) {
+        if (password == null){
+            return;
+        }
         this.password = password;
         setChanged();
 
@@ -48,15 +51,15 @@ public class KeypadBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
         super.saveAdditional(nbt, registryLookup);
-        nbt.putString("passwordSet", String.valueOf(passwordSet));
-        nbt.putString("password", String.valueOf(password));
+        nbt.putString("passwordSet", passwordSet);
+        nbt.putString("password", password);
     }
 
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
         super.loadAdditional(nbt, registryLookup);
-        password = nbt.getString("password").toString();
-        passwordSet = nbt.getString("passwordSet").toString();
+        password = nbt.getStringOr("password","");
+        passwordSet = nbt.getStringOr("passwordSet","");
 
     }
 
