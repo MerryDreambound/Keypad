@@ -2,10 +2,10 @@ package merry.keypad.blockEntities;
 
 import merry.keypad.blocks.KeypadBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import java.util.Objects;
 
 public class KeypadBlockEntity extends BlockEntity {
@@ -52,17 +52,17 @@ public class KeypadBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        super.saveAdditional(nbt, registryLookup);
-        nbt.putString("passwordSet", passwordSet);
-        nbt.putString("password", password);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putString("passwordSet", passwordSet);
+        output.putString("password", password);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        super.loadAdditional(nbt, registryLookup);
-        password = nbt.getStringOr("password","");
-        passwordSet = nbt.getStringOr("passwordSet","");
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        password = input.getStringOr("password","");
+        passwordSet = input.getStringOr("passwordSet","");
 
     }
 
