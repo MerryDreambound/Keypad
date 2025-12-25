@@ -17,9 +17,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
 import java.util.Objects;
-import java.util.Optional;
 
 public class Keypad implements ModInitializer {
 	public static final String MOD_ID = "keypad";
@@ -43,7 +41,7 @@ public class Keypad implements ModInitializer {
 						Level world = context.player().level();
 						BlockState state = world.getBlockState(payload.blockPos());
 						world.setBlock(payload.blockPos(), state.setValue(KeypadBlock.PASSWORD_SET,true),3);
-						keypadEntity.setPassword(null,false);
+						keypadEntity.setPassword("",false);
 						context.player().sendSystemMessage(Component.translatable("chat."+Keypad.MOD_ID+".setpassword",
 								Component.literal(payload.password()).setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN).withUnderlined(true)
 								.withClickEvent(new ClickEvent.CopyToClipboard(payload.password()))

@@ -23,16 +23,19 @@ public class KeypadBlockEntity extends BlockEntity {
         return passwordSet;
     }
 
-    public void setPasswordSet(String passwordSet) {
-        this.passwordSet = passwordSet;
+    public void setPasswordSet(String newPasswordSet) {
+        if (newPasswordSet == null){
+            return;
+        }
+        this.passwordSet = newPasswordSet;
         this.password = "";
         setChanged();
     }
-    public void setPassword(String password, Boolean scheduleTick) {
-        if (password == null){
+    public void setPassword(String newPassword, Boolean scheduleTick) {
+        if (newPassword == null){
             return;
         }
-        this.password = password;
+        this.password = newPassword;
         setChanged();
 
         assert level != null;
