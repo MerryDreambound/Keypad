@@ -91,7 +91,7 @@ public class KeypadBlock extends BaseEntityBlock {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (world.isClientSide()) {
             if(state.getValue(PASSWORD_SET) && state.getValue(POWERED)) {
-                player.displayClientMessage(Component.translatable("chat."+ Keypad.MOD_ID+".active"),false);
+                player.sendSystemMessage(Component.translatable("chat."+ Keypad.MOD_ID+".active"));
             }else{
                 ((CustomPlayerInterface) player).openKeypadScreen(blockEntity);
             }

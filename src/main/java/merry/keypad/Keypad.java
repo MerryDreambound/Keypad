@@ -27,14 +27,14 @@ public class Keypad implements ModInitializer {
 
 		ModBlocks.initialize();
 		ModBlockEntities.initialize();
-		PayloadTypeRegistry.playC2S().register(UpdateKeypadPayload.ID,UpdateKeypadPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(UpdateKeypadPayload.ID,UpdateKeypadPayload.CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(UpdateKeypadPayload.ID, (payload, context) -> {
 			BlockEntity keypad = context.player().level().getBlockEntity(payload.blockPos());
 			if(keypad instanceof KeypadBlockEntity keypadEntity) {
 				if(Objects.equals(keypadEntity.getPasswordSet(), "")){
 					if(payload.password().isEmpty()){
-						context.player().displayClientMessage(Component.translatable("chat."+Keypad.MOD_ID+".emptypassword","The password is empty and cannot be set") ,false);
+						context.player().sendSystemMessage(Component.translatable("chat."+Keypad.MOD_ID+".emptypassword","The password is empty and cannot be set"));
 
 					}else{
 						keypadEntity.setPasswordSet(payload.password());

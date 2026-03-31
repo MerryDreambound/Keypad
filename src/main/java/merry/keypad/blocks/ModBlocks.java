@@ -1,7 +1,7 @@
 package merry.keypad.blocks;
 
 import merry.keypad.Keypad;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -43,6 +43,7 @@ public class ModBlocks {
     );
 
     public static void initialize() {
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register((itemGroup)-> itemGroup.accept(ModBlocks.KEYPAD));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS).register((itemGroup)-> itemGroup.accept(ModBlocks.KEYPAD));
+//        ItemGroupEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS).register((itemGroup)-> itemGroup.accept(ModBlocks.KEYPAD));
     }
 }

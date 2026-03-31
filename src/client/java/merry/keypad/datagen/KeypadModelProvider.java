@@ -4,14 +4,14 @@ import com.mojang.math.Quadrant;
 import merry.keypad.blocks.KeypadBlock;
 import merry.keypad.blocks.ModBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.*;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
-import net.minecraft.client.renderer.block.model.VariantMutator;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -26,7 +26,7 @@ public class KeypadModelProvider extends FabricModelProvider {
     public static final VariantMutator Y_ROT_180 = VariantMutator.Y_ROT.withValue(Quadrant.R180);
     public static final VariantMutator Y_ROT_270 = VariantMutator.Y_ROT.withValue(Quadrant.R270);
 
-    public KeypadModelProvider(FabricDataOutput output) {
+    public KeypadModelProvider(FabricPackOutput output) {
         super(output);
     }
 
@@ -62,7 +62,8 @@ public class KeypadModelProvider extends FabricModelProvider {
     }
 
     @Override
-    public void generateItemModels(ItemModelGenerators itemModelGenerator) {
+    public void generateItemModels(ItemModelGenerators itemModelGenerators) {
+
     }
 
     @Override

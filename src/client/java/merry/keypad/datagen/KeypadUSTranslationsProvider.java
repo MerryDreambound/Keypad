@@ -1,14 +1,14 @@
 package merry.keypad.datagen;
 
 import merry.keypad.Keypad;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.HolderLookup;
 import java.util.concurrent.CompletableFuture;
 
 public class KeypadUSTranslationsProvider extends FabricLanguageProvider {
 
-    public KeypadUSTranslationsProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
+    public KeypadUSTranslationsProvider(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, "en_us", registryLookup);
     }
 

@@ -4,7 +4,6 @@ import merry.keypad.Keypad;
 import merry.keypad.blockEntities.KeypadBlockEntity;
 import merry.keypad.network.UpdateKeypadPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -48,10 +47,6 @@ public class KeypadScreen extends Screen {
 
     }
 
-    @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-    }
     @Override
     protected void setInitialFocus() {
         this.setInitialFocus(keypadTextField);
