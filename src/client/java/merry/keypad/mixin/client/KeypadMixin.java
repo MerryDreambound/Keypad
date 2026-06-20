@@ -17,7 +17,7 @@ public class KeypadMixin implements CustomPlayerInterface {
     private void openCustomScreen(BlockEntity entity) {
         if (entity instanceof KeypadBlockEntity) {
             Minecraft client = Minecraft.getInstance();
-            client.setScreen(new KeypadScreen(Component.nullToEmpty("Keypad Screen"), (KeypadBlockEntity) entity));
+            client.gui.setScreen(new KeypadScreen(Component.nullToEmpty("Keypad Screen"), (KeypadBlockEntity) entity));
 
         }
     }

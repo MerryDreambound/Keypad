@@ -33,13 +33,13 @@ public class KeypadScreen extends Screen {
 
         Button cancelButton = Button.builder(Component.translatable("screen."+Keypad.MOD_ID+".cancel"),(btn)->{
             assert this.minecraft != null;
-            this.minecraft.setScreen(null);
+            this.minecraft.gui.setScreen(null);
         }).bounds(this.width/2 - textWidth/2, this.height/2 + buttonHeight/2,buttonWidth,buttonHeight).build();
 
         Button acceptButton = Button.builder(Component.translatable("screen."+Keypad.MOD_ID+".accept"),(btn)->{
             setPassword(keypadTextField.getValue());
             assert this.minecraft != null;
-            this.minecraft.setScreen(null);
+            this.minecraft.gui.setScreen(null);
         }).bounds(this.width/2 - textWidth/2 + buttonWidth, this.height/2 + buttonHeight/2,buttonWidth,buttonHeight).build();
 
         this.addRenderableWidget(cancelButton);
